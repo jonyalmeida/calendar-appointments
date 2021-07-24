@@ -1,53 +1,80 @@
 import { combineReducers } from 'redux';
-import { 
+import {
 	OPEN_AGENDA,
 	CLOSE_AGENDA,
 	OPEN_ADD_REMINDER,
-	CLOSE_ADD_REMINDER
+	CLOSE_ADD_REMINDER,
+	ADD_REMINDER
 } from './actions';
 
 const initialAgendaState = {
 	isOpen: false,
 	date: null
-}
+};
 
 const initialAddReminderState = {
 	isOpen: false
-}
+};
 
-function agendaStatus( state = initialAgendaState , action: any ) {
-	switch( action.type ) {
+const initialRemindersState = { reminders: {} };
+
+function agendaStatus(state = initialAgendaState, action: any) {
+	switch (action.type) {
 		case OPEN_AGENDA:
 			return {
 				isOpen: true,
 				date: action.dateObj.date
-			}
+			};
 		case CLOSE_AGENDA:
 			return {
 				isOpen: false,
 				date: null
-			}
-		default: return state
+			};
+		default:
+			return state;
 	}
 }
 
-function addReminderStatus( state = initialAddReminderState, action: any ) {
-	switch( action.type ) {
+function addReminderStatus(state = initialAddReminderState, action: any) {
+	switch (action.type) {
 		case OPEN_ADD_REMINDER:
 			return {
 				isOpen: true
-			}
+			};
 		case CLOSE_ADD_REMINDER:
 			return {
 				isOpen: false
-			}
-		default: return state
+			};
+		default:
+			return state;
 	}
 }
 
-const calendarApp = combineReducers( {
+function addReminder(state = initialRemindersState, action: any) {
+	const stateCp = state;
+
+	switch (action.type) {
+		case ADD_REMINDER:
+			if (state.reminders.hasOwnProperty(action.reminder.date)) {
+				stateCp[action.reminder.date] = stateCp[
+					action.reminder.date
+				].push(action.reminder.content);
+
+				return stateCp;
+			} else {
+				stateCp[action.reminder.date] = [action.reminder.content];
+
+				return stateCp;
+			}
+		default:
+			break;
+	}
+}
+
+const calendarApp = combineReducers({
 	agendaStatus,
-	addReminderStatus
-} )
+	addReminderStatus,
+	addReminder
+});
 
 export default calendarApp;

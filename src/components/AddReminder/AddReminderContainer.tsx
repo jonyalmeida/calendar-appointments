@@ -1,27 +1,34 @@
 import { connect } from 'react-redux';
 import AddReminder from './AddReminder';
-import { closeAddReminder } from '../../redux/actions';
+import { closeAddReminder, addReminder } from '../../redux/actions';
+import { Reminder } from '../../interfaces';
 
 interface State {
 	addReminderStatus: {
-		isOpen: boolean
-	}
-}
-
-const mapStateToProps = (state:State) => {
-	return { 
-		isOpen: state.addReminderStatus.isOpen
+		isOpen: boolean;
 	};
 }
+
+const mapStateToProps = (state: State) => {
+	return {
+		isOpen: state.addReminderStatus.isOpen
+	};
+};
 
 const mapDispatchToProps = (dispatch: any) => {
 	return {
 		onClose: () => {
-			dispatch( closeAddReminder() );
+			dispatch(closeAddReminder());
+		},
+		onSubmit: (reminder: Reminder) => {
+			dispatch(addReminder(reminder));
 		}
-	}
-}
+	};
+};
 
-const AddReminderContainer = connect( mapStateToProps, mapDispatchToProps )( AddReminder );
+const AddReminderContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(AddReminder);
 
 export default AddReminderContainer;

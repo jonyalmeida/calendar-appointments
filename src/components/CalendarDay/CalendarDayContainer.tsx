@@ -1,31 +1,27 @@
 import { connect } from 'react-redux';
 import CalendarDay from './CalendarDay';
 import { openAgenda } from '../../redux/actions';
+import { DateObj } from '../../interfaces';
 
-interface Props {
+interface Props {}
 
-}
+interface State {}
 
-interface State {
-
-}
-
-interface DateObj {
-	date: Date
-}
-
-const mapStateToProps = ( state: State, ownProps: Props ) => {
+const mapStateToProps = (state: State, ownProps: Props) => {
 	return { ...state, ...ownProps };
-}
+};
 
-const mapDispatchToProps = (dispatch: any)=> {
+const mapDispatchToProps = (dispatch: any) => {
 	return {
 		onDayClick: (dateObj: DateObj) => {
-			dispatch( openAgenda( dateObj ) )
+			dispatch(openAgenda(dateObj));
 		}
-	}
-}
+	};
+};
 
-const CalendarDayContainer = connect( mapStateToProps, mapDispatchToProps )( CalendarDay );
+const CalendarDayContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(CalendarDay);
 
 export default CalendarDayContainer;

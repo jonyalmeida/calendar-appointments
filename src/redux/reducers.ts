@@ -67,7 +67,7 @@ function addReminder(state = initialRemindersState, action: any) {
 				return stateCp;
 			}
 		default:
-			break;
+			return state;
 	}
 }
 

@@ -12,7 +12,8 @@ import {
 	Theme,
 	Button,
 	TextField,
-	Grid
+	Grid,
+	Container
 } from '@material-ui/core';
 import {
 	MuiPickersUtilsProvider,
@@ -42,7 +43,30 @@ const styles = (theme: Theme) =>
 			bottom: '10px',
 			maxWidth: '50px',
 			marginTop: '5%'
-		}
+		},
+		wrapper: {
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		textField: {
+			marginTop: '10%'
+		},
+		entryBoxStyle: {
+			boxShadow: '1px 1px 5px 1px black',
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'flex-start',
+			justifyContent: 'cemter',
+			padding: '0 3% 0 3%',
+			minHeight: '75px',
+			width: '200px'
+		},
+		inputWarning: {
+			display: 'flex',
+			flexDirection: 'column'
+		},
+		charsWarning: { fontSize: '9px', alignSelf: 'flex-end', color: 'red' }
 	});
 
 interface Props extends WithStyles<typeof styles> {
@@ -51,17 +75,13 @@ interface Props extends WithStyles<typeof styles> {
 	onSubmit: (reminder: Reminder) => void;
 }
 
-const AddReminder = (props: Props) => {
-	const { classes, isOpen, onClose } = props;
-
+const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 	const [inputText, setInputText] = useState<string>('');
 	const [maxLengthText, setMaxLengthText] = useState<boolean>(false);
 
-	const handleSubmit = () => {
-		if (selectedDate && inputText) {
-			console.log(inputText);
-		}
+	const handleClick = () => {
+		onSubmit({ date: selectedDate, content: inputText });
 	};
 
 	useEffect(() => {
@@ -88,47 +108,44 @@ const AddReminder = (props: Props) => {
 			</DialogTitle>
 			<Divider light />
 			<DialogContent className={classes.addReminderFormContainer}>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'space-between'
-					}}>
-					<MuiPickersUtilsProvider utils={DateFnsUtils}>
-						<Grid container>
-							<KeyboardDatePicker
-								disableToolbar
-								variant='inline'
-								format='MM/dd/yyyy'
-								margin='normal'
-								id='date-picker-inline'
-								label='Date picker inline'
-								value={selectedDate}
-								onChange={setSelectedDate}
-								KeyboardButtonProps={{
-									'aria-label': 'change date'
-								}}
+				<Container className={classes.wrapper}>
+					<Container className={classes.entryBoxStyle}>
+						Pick a date:
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<Grid container>
+								<KeyboardDatePicker
+									disableToolbar
+									variant='inline'
+									format='MM/dd/yyyy'
+									margin='normal'
+									id='date-picker-inline'
+									value={selectedDate}
+									onChange={setSelectedDate}
+									KeyboardButtonProps={{
+										'aria-label': 'change date'
+									}}
+								/>
+							</Grid>
+						</MuiPickersUtilsProvider>
+					</Container>
+					<Container className={classes.entryBoxStyle}>
+						Type your reminder:
+						<Container className={classes.inputWarning}>
+							<TextField
+								className={classes.textField}
+								onChange={(e) => setInputText(e.target.value)}
 							/>
-						</Grid>
-					</MuiPickersUtilsProvider>
-					<div style={{ display: 'flex', flexDirection: 'column' }}>
-						<TextField
-							onChange={(e) => setInputText(e.target.value)}
-						/>
-						{maxLengthText && (
-							<div
-								style={{
-									fontSize: '9px',
-									alignSelf: 'flex-end',
-									color: 'red'
-								}}>
-								Entry must be 30 characters or less
-							</div>
-						)}
-					</div>
-				</div>
+							{maxLengthText && (
+								<Container className={classes.charsWarning}>
+									Entry must be 30 characters or less
+								</Container>
+							)}
+						</Container>
+					</Container>
+				</Container>
 				<Button
 					className={classes.submitButton}
-					onSubmit={handleSubmit}
+					onClick={handleClick}
 					disabled={!inputText || maxLengthText}>
 					Submit
 				</Button>

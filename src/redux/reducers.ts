@@ -16,7 +16,7 @@ const initialAddReminderState = {
 	isOpen: false
 };
 
-const initialRemindersState = { reminders: {} };
+const initialRemindersState = {};
 
 function agendaStatus(state = initialAgendaState, action: any) {
 	switch (action.type) {
@@ -52,18 +52,14 @@ function addReminderStatus(state = initialAddReminderState, action: any) {
 
 function addReminder(state = initialRemindersState, action: any) {
 	const stateCp = state;
-
+	console.log(state);
 	switch (action.type) {
 		case ADD_REMINDER:
-			if (state.reminders.hasOwnProperty(action.reminder.date)) {
-				stateCp[action.reminder.date] = stateCp[
-					action.reminder.date
-				].push(action.reminder.content);
-
+			if (state.hasOwnProperty(action.reminder.date)) {
+				stateCp[action.reminder.date].push(action.reminder.content);
 				return stateCp;
 			} else {
 				stateCp[action.reminder.date] = [action.reminder.content];
-
 				return stateCp;
 			}
 		default:

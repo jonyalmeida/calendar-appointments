@@ -8,10 +8,11 @@ import {
 	IconButton,
 	WithStyles,
 	withStyles,
+	makeStyles,
 	createStyles,
 	Theme,
 	Button,
-	TextField,
+	Input,
 	Grid,
 	Container
 } from '@material-ui/core';
@@ -49,14 +50,14 @@ const styles = (theme: Theme) =>
 			justifyContent: 'center',
 			alignItems: 'center'
 		},
-		textField: {
+		input: {
 			marginTop: '10%'
 		},
 		entryBoxStyle: {
 			boxShadow: '1px 1px 5px 1px black',
 			display: 'flex',
 			flexDirection: 'column',
-			alignItems: 'flex-start',
+			alignItems: 'center',
 			justifyContent: 'cemter',
 			padding: '0 3% 0 3%',
 			minHeight: '75px',
@@ -79,9 +80,10 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 	const [inputText, setInputText] = useState<string>('');
 	const [maxLengthText, setMaxLengthText] = useState<boolean>(false);
+	const [color, setColor] = useState<string>('black');
 
 	const handleClick = () => {
-		onSubmit({ date: selectedDate, content: inputText });
+		onSubmit({ date: selectedDate, content: inputText, color: color });
 	};
 
 	useEffect(() => {
@@ -89,6 +91,10 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 			? setMaxLengthText(true)
 			: setMaxLengthText(false);
 	}, [inputText]);
+
+	const styles = {
+		color: color
+	};
 
 	return (
 		<Dialog
@@ -131,8 +137,9 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 					<Container className={classes.entryBoxStyle}>
 						Type your reminder:
 						<Container className={classes.inputWarning}>
-							<TextField
-								className={classes.textField}
+							<Input
+								className={classes.input}
+								style={styles}
 								onChange={(e) => setInputText(e.target.value)}
 							/>
 							{maxLengthText && (
@@ -141,6 +148,15 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 								</Container>
 							)}
 						</Container>
+					</Container>
+					<Container className={classes.entryBoxStyle}>
+						Pick a color:
+						<input
+							className={classes.input}
+							type='color'
+							value={color}
+							onChange={(e) => setColor(e.target.value)}
+						/>
 					</Container>
 				</Container>
 				<Button

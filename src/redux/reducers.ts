@@ -56,10 +56,18 @@ function addReminder(state = initialRemindersState, action: any) {
 	switch (action.type) {
 		case ADD_REMINDER:
 			if (state.hasOwnProperty(action.reminder.date)) {
-				stateCp[action.reminder.date].push(action.reminder.content);
+				stateCp[action.reminder.date].push({
+					content: action.reminder.content,
+					color: action.reminder.color
+				});
 				return stateCp;
 			} else {
-				stateCp[action.reminder.date] = [action.reminder.content];
+				stateCp[action.reminder.date] = [
+					{
+						content: action.reminder.content,
+						color: action.reminder.color
+					}
+				];
 				return stateCp;
 			}
 		default:

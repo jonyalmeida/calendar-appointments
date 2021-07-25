@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import AgendaDay from './AgendaDay';
 import { closeAgenda } from '../../redux/actions';
+import { Reminder } from '../../interfaces';
 
 interface Props {}
 
@@ -10,7 +11,7 @@ interface State {
 		date: Date;
 	};
 	addReminder: {
-		reminders: any;
+		reminders: Reminder[];
 	};
 }
 

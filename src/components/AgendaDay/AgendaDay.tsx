@@ -1,14 +1,12 @@
 import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
-import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	Divider,
-	IconButton,
-	List,
-	ListItem
-} from '@material-ui/core/';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import {
 	WithStyles,
 	withStyles,
@@ -43,14 +41,14 @@ interface Props extends WithStyles<typeof styles> {
 		isOpen: boolean;
 		date: Date;
 	};
-	reminders: any;
+	reminders: Reminder[];
 	onClose: () => void;
 }
 
 const AgendaDay = ({ classes, agendaStatus, reminders, onClose }: Props) => {
 	if (agendaStatus.date) {
 		var dateTitle = dateFns.format(agendaStatus.date, 'LLLL do, yyyy');
-		var dateKey = dateFns.format(agendaStatus.date, 'yyyy-MM-dd');
+		var dateKey: string = dateFns.format(agendaStatus.date, 'yyyy-MM-dd');
 	}
 
 	return (

@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	Divider,
-	IconButton,
 	WithStyles,
 	withStyles,
 	createStyles,
-	Theme,
-	Button,
-	Input,
-	Container,
-	TextField,
-	Typography
-} from '@material-ui/core';
+	Theme
+} from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 import { Reminder } from '../../interfaces';
 import { formatDate } from '../../utils';
 
@@ -121,8 +120,8 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 			</DialogTitle>
 			<Divider light />
 			<DialogContent className={classes.addReminderFormContainer}>
-				<Container className={classes.wrapper}>
-					<Container className={classes.entryBox}>
+				<div className={classes.wrapper}>
+					<div className={classes.entryBox}>
 						<Typography>Pick a date and time:</Typography>
 						<TextField
 							id='datetime-local'
@@ -136,32 +135,40 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 								setSelectedDateTime(e.target.value)
 							}
 						/>
-					</Container>
-					<Container className={classes.entryBox}>
+					</div>
+					<div className={classes.entryBox}>
 						<Typography>Type your reminder:</Typography>
-						<Container className={classes.inputWarning}>
+						<div className={classes.inputWarning}>
 							<Input
 								className={classes.input}
 								style={styles}
-								onChange={(e) => setInputText(e.target.value)}
+								onChange={(
+									e: ChangeEvent<
+										HTMLInputElement | HTMLTextAreaElement
+									>
+								): void => setInputText(e.target.value)}
 							/>
 							{maxLengthText && (
 								<Typography className={classes.charsWarning}>
 									Entry must be 30 characters or less
 								</Typography>
 							)}
-						</Container>
-					</Container>
-					<Container className={classes.entryBox}>
+						</div>
+					</div>
+					<div className={classes.entryBox}>
 						<Typography>Pick a color:</Typography>
 						<input
 							className={classes.input}
 							type='color'
 							value={color}
-							onChange={(e) => setColor(e.target.value)}
+							onChange={(
+								e: ChangeEvent<
+									HTMLInputElement | HTMLTextAreaElement
+								>
+							): void => setColor(e.target.value)}
 						/>
-					</Container>
-				</Container>
+					</div>
+				</div>
 				<Button
 					className={classes.submitButton}
 					onClick={handleClick}

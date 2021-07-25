@@ -17,6 +17,7 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import { Reminder } from '../../interfaces';
 import { formatDate } from '../../utils';
+import { Container } from '../Common';
 
 const styles = (theme: Theme) =>
 	createStyles({
@@ -59,6 +60,7 @@ const styles = (theme: Theme) =>
 			alignItems: 'center',
 			justifyContent: 'cemter',
 			padding: '0 3% 0 3%',
+			margin: '0 1% 0 1%',
 			minHeight: '75px',
 			width: '250px'
 		},
@@ -120,8 +122,8 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 			</DialogTitle>
 			<Divider light />
 			<DialogContent className={classes.addReminderFormContainer}>
-				<div className={classes.wrapper}>
-					<div className={classes.entryBox}>
+				<Container className={classes.wrapper}>
+					<Container className={classes.entryBox}>
 						<Typography>Pick a date and time:</Typography>
 						<TextField
 							id='datetime-local'
@@ -135,10 +137,10 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 								setSelectedDateTime(e.target.value)
 							}
 						/>
-					</div>
-					<div className={classes.entryBox}>
+					</Container>
+					<Container className={classes.entryBox}>
 						<Typography>Type your reminder:</Typography>
-						<div className={classes.inputWarning}>
+						<Container className={classes.inputWarning}>
 							<Input
 								className={classes.input}
 								style={styles}
@@ -153,9 +155,9 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 									Entry must be 30 characters or less
 								</Typography>
 							)}
-						</div>
-					</div>
-					<div className={classes.entryBox}>
+						</Container>
+					</Container>
+					<Container className={classes.entryBox}>
 						<Typography>Pick a color:</Typography>
 						<input
 							className={classes.input}
@@ -167,8 +169,8 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 								>
 							): void => setColor(e.target.value)}
 						/>
-					</div>
-				</div>
+					</Container>
+				</Container>
 				<Button
 					className={classes.submitButton}
 					onClick={handleClick}

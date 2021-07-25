@@ -8,20 +8,16 @@ import {
 	IconButton,
 	WithStyles,
 	withStyles,
-	makeStyles,
 	createStyles,
 	Theme,
 	Button,
 	Input,
-	Grid,
-	Container
+	Container,
+	TextField,
+	Typography
 } from '@material-ui/core';
-import {
-	MuiPickersUtilsProvider,
-	KeyboardDatePicker
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import { Reminder } from '../../interfaces';
+import { formatDate } from '../../utils';
 
 const styles = (theme: Theme) =>
 	createStyles({
@@ -53,7 +49,11 @@ const styles = (theme: Theme) =>
 		input: {
 			marginTop: '10%'
 		},
-		entryBoxStyle: {
+		datePicker: {
+			marginTop: '10%',
+			width: '225px'
+		},
+		entryBox: {
 			boxShadow: '1px 1px 5px 1px black',
 			display: 'flex',
 			flexDirection: 'column',
@@ -61,13 +61,14 @@ const styles = (theme: Theme) =>
 			justifyContent: 'cemter',
 			padding: '0 3% 0 3%',
 			minHeight: '75px',
-			width: '200px'
+			width: '250px'
 		},
 		inputWarning: {
 			display: 'flex',
-			flexDirection: 'column'
+			flexDirection: 'column',
+			alignItems: 'center'
 		},
-		charsWarning: { fontSize: '9px', alignSelf: 'flex-end', color: 'red' }
+		charsWarning: { fontSize: '9px', color: 'red' }
 	});
 
 interface Props extends WithStyles<typeof styles> {
@@ -77,13 +78,19 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
-	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+	const [selectedDateTime, setSelectedDateTime] = useState<string>(
+		formatDate(new Date())
+	);
 	const [inputText, setInputText] = useState<string>('');
 	const [maxLengthText, setMaxLengthText] = useState<boolean>(false);
 	const [color, setColor] = useState<string>('black');
 
 	const handleClick = () => {
-		onSubmit({ date: selectedDate, content: inputText, color: color });
+		onSubmit({
+			dateTime: selectedDateTime,
+			content: inputText,
+			color: color
+		});
 	};
 
 	useEffect(() => {
@@ -115,27 +122,23 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 			<Divider light />
 			<DialogContent className={classes.addReminderFormContainer}>
 				<Container className={classes.wrapper}>
-					<Container className={classes.entryBoxStyle}>
-						Pick a date:
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container>
-								<KeyboardDatePicker
-									disableToolbar
-									variant='inline'
-									format='MM/dd/yyyy'
-									margin='normal'
-									id='date-picker-inline'
-									value={selectedDate}
-									onChange={setSelectedDate}
-									KeyboardButtonProps={{
-										'aria-label': 'change date'
-									}}
-								/>
-							</Grid>
-						</MuiPickersUtilsProvider>
+					<Container className={classes.entryBox}>
+						<Typography>Pick a date and time:</Typography>
+						<TextField
+							id='datetime-local'
+							type='datetime-local'
+							defaultValue={selectedDateTime}
+							className={classes.datePicker}
+							InputLabelProps={{
+								shrink: true
+							}}
+							onChange={(e) =>
+								setSelectedDateTime(e.target.value)
+							}
+						/>
 					</Container>
-					<Container className={classes.entryBoxStyle}>
-						Type your reminder:
+					<Container className={classes.entryBox}>
+						<Typography>Type your reminder:</Typography>
 						<Container className={classes.inputWarning}>
 							<Input
 								className={classes.input}
@@ -143,14 +146,14 @@ const AddReminder = ({ classes, isOpen, onClose, onSubmit }: Props) => {
 								onChange={(e) => setInputText(e.target.value)}
 							/>
 							{maxLengthText && (
-								<Container className={classes.charsWarning}>
+								<Typography className={classes.charsWarning}>
 									Entry must be 30 characters or less
-								</Container>
+								</Typography>
 							)}
 						</Container>
 					</Container>
-					<Container className={classes.entryBoxStyle}>
-						Pick a color:
+					<Container className={classes.entryBox}>
+						<Typography>Pick a color:</Typography>
 						<input
 							className={classes.input}
 							type='color'

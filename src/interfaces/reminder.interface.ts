@@ -1,5 +1,5 @@
 export interface Reminder {
-	date: Date;
+	dateTime: string;
 	content: string;
 	color: string;
 }

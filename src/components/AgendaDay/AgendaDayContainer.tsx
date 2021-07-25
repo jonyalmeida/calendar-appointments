@@ -6,25 +6,31 @@ interface Props {}
 
 interface State {
 	agendaStatus: {
-		isOpen: boolean,
-		date: Date
-	}
+		isOpen: boolean;
+		date: Date;
+	};
+	addReminder: {
+		reminders: any;
+	};
 }
 
-const mapStateToProps = ( state: State, ownProps: Props ) => {
-	const { agendaStatus } = state;
+const mapStateToProps = (state: State, ownProps: Props) => {
+	const { agendaStatus, addReminder } = state;
 
-	return { agendaStatus };
-}
+	return { agendaStatus, reminders: addReminder.reminders };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
 	return {
 		onClose: () => {
-			dispatch( closeAgenda() );
+			dispatch(closeAgenda());
 		}
-	}
-}
+	};
+};
 
-const AgendaDayContainer = connect( mapStateToProps, mapDispatchToProps )( AgendaDay );
+const AgendaDayContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(AgendaDay);
 
 export default AgendaDayContainer;

@@ -6,6 +6,7 @@ import {
 	CLOSE_ADD_REMINDER,
 	ADD_REMINDER
 } from './actions';
+import { insertSorted } from '../utils';
 
 const initialAgendaState = {
 	isOpen: false,
@@ -16,7 +17,9 @@ const initialAddReminderState = {
 	isOpen: false
 };
 
-const initialRemindersState = {};
+const initialRemindersState = {
+	reminders: {}
+};
 
 function agendaStatus(state = initialAgendaState, action: any) {
 	switch (action.type) {
@@ -51,24 +54,27 @@ function addReminderStatus(state = initialAddReminderState, action: any) {
 }
 
 function addReminder(state = initialRemindersState, action: any) {
-	const stateCp = state;
-	console.log(state);
+	const copyReminders = state.reminders;
+	const dateKey = action.reminder?.dateTime.split('T')[0];
+
 	switch (action.type) {
 		case ADD_REMINDER:
-			if (state.hasOwnProperty(action.reminder.date)) {
-				stateCp[action.reminder.date].push({
+			if (copyReminders.hasOwnProperty(dateKey)) {
+				insertSorted(copyReminders[dateKey], {
+					dateTime: action.reminder.dateTime,
 					content: action.reminder.content,
 					color: action.reminder.color
 				});
-				return stateCp;
+				return { ...state, reminders: copyReminders };
 			} else {
-				stateCp[action.reminder.date] = [
+				copyReminders[dateKey] = [
 					{
+						dateTime: action.reminder.dateTime,
 						content: action.reminder.content,
 						color: action.reminder.color
 					}
 				];
-				return stateCp;
+				return { ...state, reminders: copyReminders };
 			}
 		default:
 			return state;
